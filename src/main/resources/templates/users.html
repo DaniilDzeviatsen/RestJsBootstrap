@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Users</title>
+</head>
+<body>
+<div th:each="user: ${users}">
+    <td th:text="${user.id}">User ID</td>
+    <td th:text="${user.username}">Name</td>
+    <td th:text="${user.surname}">Surname</td>
+    <td th:text="${user.roles}">Roles</td>
+    <td><a th:href="@{/admin/(id=${user.getId()})}" th:text=Edit></a></td>
+</div>
+<br/>
+<hr/>
+<td>
+    <a th:href="@{/admin/new}">Create new user</a>
+</td>
+<a href="/logout">Logout</a>
+</body>
+</html>

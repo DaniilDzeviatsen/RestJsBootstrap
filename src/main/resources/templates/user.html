@@ -5,7 +5,18 @@
 </head>
 <body>
 <h1>User, welcome spring boot security page!</h1>
+<table>
+<tr>
+<th>ID</th>
+<th>Username</th>
+<th>Password</th>
+</tr>
 
+<td th:text="${user.getId()}"></td>
+<td th:text="${user.getUsername()}"></td>
+<td th:text="${user.getPassword()}"></td>
+</table>
+<a href="/logout">Logout</a>
 
 </body>
 </html>
