@@ -37,8 +37,8 @@ public class AdminController {
         UserPrincipal user = (UserPrincipal) userDetailsService.loadUserByUsername(username);
         model.addAttribute("user", user);
         return "user";
-
     }
+
 
     @GetMapping()
     public String getUsers(Model model) {
