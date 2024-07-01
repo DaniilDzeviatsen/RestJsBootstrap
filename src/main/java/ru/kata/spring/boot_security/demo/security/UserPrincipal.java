@@ -2,9 +2,13 @@ package ru.kata.spring.boot_security.demo.security;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import ru.kata.spring.boot_security.demo.model.Role;
 import ru.kata.spring.boot_security.demo.model.User;
 
 import java.util.Collection;
+import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
 
 public class UserPrincipal implements UserDetails {
@@ -18,7 +22,7 @@ public class UserPrincipal implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return user.getRoles();
+        return mapToRoleGA(user.getRoles());
     }
 
     @Override
@@ -62,7 +66,7 @@ public class UserPrincipal implements UserDetails {
     }
 
     public User getUser() {
-        return user;
+        return Optional.of(user).orElseThrow(() -> new UsernameNotFoundException("User not found"));
     }
 
     @Override
@@ -83,5 +87,13 @@ public class UserPrincipal implements UserDetails {
     @Override
     public boolean isEnabled() {
         return true;
+    }
+
+    public Collection<RoleGA> mapToRoleGA(Collection<Role> roles) {
+        Collection<RoleGA> roleGASet = new HashSet<>();
+        for (Role role : roles) {
+            roleGASet.add(new RoleGA(role));
+        }
+        return roleGASet;
     }
 }
