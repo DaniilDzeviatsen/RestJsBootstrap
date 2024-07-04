@@ -12,6 +12,7 @@ import ru.kata.spring.boot_security.demo.security.UserDetailsServiceImpl;
 import ru.kata.spring.boot_security.demo.security.UserPrincipal;
 import ru.kata.spring.boot_security.demo.service.UserService;
 
+import java.security.Principal;
 import java.util.List;
 
 @Controller
@@ -41,8 +42,9 @@ public class AdminController {
 
 
     @GetMapping()
-    public String getUsers(Model model) {
+    public String getUsers(Model model, Principal principal) {
         model.addAttribute("users", userService.getAllUsers());
+        model.addAttribute("principal", userDetailsService.loadUserByUsername(principal.getName()));
         return "users";
     }
 
@@ -53,9 +55,10 @@ public class AdminController {
     }
 
     @GetMapping("/new")
-    public String showSignUpForm(@ModelAttribute("user") User user, Model model) {
+    public String showSignUpForm(@ModelAttribute("user") User user, Model model, Principal principal) {
         List<Role> listRoles = roleDao.findAll();
         model.addAttribute("listRoles", listRoles);
+        model.addAttribute("principal", userDetailsService.loadUserByUsername(principal.getName()));
         return "new";
     }
 

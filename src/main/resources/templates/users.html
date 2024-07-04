@@ -1,25 +1,129 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://thymeleaf.org">
+<html lang="en" xmlns:th="http://thymeleaf.org" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://thymeleaf.org ">
 <head>
+    <script type="text/javascript" src="/webjars/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="/webjars/jquery/3.4.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>Users</title>
 </head>
 <body>
-<div th:each="user: ${users}">
-    <td th:text="${user.id}">User ID</td>
-    <td th:text="${user.username}">Name</td>
-    <td th:text="${user.surname}">Surname</td>
-    <td th:text="${user.roles}">Roles</td>
-    <td><a th:href="@{/admin/(id=${user.getId()})}" th:text=Edit></a></td>
+<nav class="navbar navbar-dark bg-dark">
+    <p style="color: aliceblue"><b>
+        <td th:text="${principal.username}"></td>
+    </b>
+    <td th:text="${principal.roles}"></td>
+    </p>
+    <a th:href="@{/logout}">Logout</a>
+</nav>
+
+<div class="row no-gutters justify-content-start">
+
+    <div class="col-2">
+        <td>
+            <div class="list-group">
+
+                <a th:href="@{/admin}" class="list-group-item list-group-item-action active">Admin</a>
+                <a th:href="@{/admin/user}" class="list-group-item list-group-item-action">User</a>
+
+            </div>
+
+
+        </td>
+    </div>
+
+    <div class="col-10">
+        <ul class="pagination">
+
+            <li class="page-item disabled"><a class="page-link" th:href="@{/admin}">Users table</a></li>
+            <li class="page-item"><a class="page-link" th:href="@{/admin/new}">New User</a></li>
+
+        </ul>
+
+        <h1>Admin Panel</h1>
+        <h4>All users</h4>
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th scope="col">ID</th>
+                <th scope="col">Name</th>
+                <th scope="col">Surname</th>
+                <th scope="col">Roles</th>
+            </tr>
+            </thead>
+
+            <tbody>
+
+            <tr th:each="user: ${users}">
+                <td th:text="${user.id}">ID</td>
+                <td th:text="${user.username}">Name</td>
+                <td th:text="${user.surname}">Surname</td>
+                <td th:text="${user.roles}">Roles</td>
+                <td><a th:href="@{/admin/(id=${user.getId()})}" th:text=Edit class="badge badge-primary"></a></td>
+
+
+                <td>
+                    <form th:method="DELETE" th:action="@{/admin/(id=${user.getId()})}"
+                          class="badge badge-secondary">
+                        <input type="submit" value="Delete">
+                    </form>
+                </td>
+            </tr>
+
+            </tbody>
+        </table>
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">Open modal
+            for @mdo
+        </button>
+        <button data-target="#exampleModal" role="button" class="btn" data-toggle="modal">Launch demo modal</button>
+        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+             aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">New message</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form>
+                            <div class="form-group">
+                                <label for="recipient-name" class="col-form-label">Recipient:</label>
+                                <input type="text" class="form-control" id="recipient-name">
+                            </div>
+                            <div class="form-group">
+                                <label for="message-text" class="col-form-label">Message:</label>
+                                <textarea class="form-control" id="message-text"></textarea>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary">Send message</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
 </div>
+
 <br/>
 <hr/>
-<td>
-    <a th:href="@{/admin/user}">My info</a>
-</td>
-<td>
-    <a th:href="@{/admin/new}">Create new user</a>
-</td>
-<a href="/logout">Logout</a>
+<!--<td>-->
+<!--    <a th:href="@{/admin/user}">My info</a>-->
+<!--</td>-->
+<!--<td>-->
+<!--    <a th:href="@{/admin/new}">Create new user</a>-->
+<!--</td>-->
+<!--<a href="/logout">Logout</a>-->
 </body>
 </html>
+
+
+
