@@ -32,6 +32,12 @@ public class AdminController {
         this.roleDao = roleDao;
     }
 
+    @ModelAttribute("listRoles")
+    public List<Role> listRoles() {
+        return roleDao.findAll();
+    }
+
+
     @GetMapping("/user")
     public String getUserById(Model model, Authentication authentication) {
         String username = authentication.getName();
@@ -56,8 +62,6 @@ public class AdminController {
 
     @GetMapping("/new")
     public String showSignUpForm(@ModelAttribute("user") User user, Model model, Principal principal) {
-        List<Role> listRoles = roleDao.findAll();
-        model.addAttribute("listRoles", listRoles);
         model.addAttribute("principal", userDetailsService.loadUserByUsername(principal.getName()));
         return "new";
     }
@@ -66,14 +70,6 @@ public class AdminController {
     public String addUser(@ModelAttribute("user") User user) {
         userService.addUser(user);
         return "redirect:/admin";
-    }
-
-    @GetMapping("/edit")
-    public String showUpdateForm(@RequestParam Long id, Model model) {
-        List<Role> listRoles = roleDao.findAll();
-        model.addAttribute("user", userService.getUser(id));
-        model.addAttribute("listRoles", listRoles);
-        return "edit";
     }
 
     @PatchMapping("/")
@@ -87,6 +83,5 @@ public class AdminController {
         userService.deleteUser(id);
         return "redirect:/admin";
     }
-
 }
 
