@@ -25,10 +25,8 @@ async function addNewUserForm() {
         event.preventDefault();
 
         const name = newUserForm.querySelector("#usernameNew").value.trim();
-        const surname = newUserForm.querySelector("#usersurnameNew").value.trim();
-
+        const surname = newUserForm.querySelector("#surnameNew").value.trim();
         const password = newUserForm.querySelector("#passwordNew").value.trim();
-
         const rolesSelected = document.getElementById("rolesNew");
 
         let allRoles = await getRoles();
@@ -45,8 +43,7 @@ async function addNewUserForm() {
 
         const newUserData = {
             username: name,
-            usersurname: surname,
-
+            surname: surname,
             password: password,
             roles: roles
         };
@@ -54,23 +51,12 @@ async function addNewUserForm() {
         const result = await createNewUser(newUserData);
 
         if (result.success) {
-            // Очистка формы и текста ошибок
             newUserForm.reset();
-            displayValidationErrors({}); // Очистка ошибок
-
-            // Переход на вкладку с таблицей пользователей и обновление таблицы
             document.querySelector('#admin-users-table-tab').click();
             await fillTableOfAllUsers();
-        } else {
-            displayValidationErrors(result.errors);
         }
     });
 }
 
-function displayValidationErrors(errors) {
-    document.getElementById("usernameError").textContent = errors.username || '';
-    document.getElementById("usersurnameError").textContent = errors.usersurname || '';
 
-    document.getElementById("passwordError").textContent = errors.password || '';
-}
 

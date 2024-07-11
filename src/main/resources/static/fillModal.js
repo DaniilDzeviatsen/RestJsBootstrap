@@ -15,18 +15,13 @@ async function fillModal(modal) {
 
 
         const usernameInput = modalBody.querySelector("input[data-user-id='username']");
-        const usersurnameInput = modalBody.querySelector("input[data-user-id='usersurname']");
-
+        const surnameInput = modalBody.querySelector("input[data-user-id='surname']");
         const passwordInput = modalBody.querySelector("input[data-user-id='password']");
         if (passwordInput !== null) {
             passwordInput.value = user.password;
         }
-
-
         usernameInput.value = user.username;
-        usersurnameInput.value = user.usersurname;
-
-
+        surnameInput.value = user.surname;
 
         let rolesSelect = HTMLSelectElement;
 

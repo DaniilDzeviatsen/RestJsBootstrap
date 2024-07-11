@@ -52,30 +52,17 @@ modalEdit.addEventListener("submit", async function (event) {
     let user = {
         id: userIdToEdit,
         username: document.getElementById("usernameEdit").value,
-        usersurname: document.getElementById("usersurnameEdit").value,
-
+        surname: document.getElementById("surnameEdit").value,
         password: document.getElementById("passwordEdit").value,
         roles: roles
     };
 
     const result = await sendDataEditUser(user, userIdToEdit);
 
-
     if (result.success) {
-        // Очистка формы и текста ошибок
         const modalBootstrap = bootstrap.Modal.getInstance(modalEdit);
         modalBootstrap.hide();
-        displayValidationErrorsForModal({}); // Очистка ошибок
-
         await fillTableOfAllUsers();
-    } else {
-        displayValidationErrorsForModal(result.errors);
     }
 });
 
-function displayValidationErrorsForModal(errors) {
-    document.getElementById("usernameEditError").textContent = errors.username || '';
-    document.getElementById("usersurnameEditError").textContent = errors.usersurname || '';
-
-    document.getElementById("passwordEditError").textContent = errors.password || '';
-}

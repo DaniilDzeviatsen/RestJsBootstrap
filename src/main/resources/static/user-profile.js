@@ -16,7 +16,7 @@ async function fillTableAboutUser() {
     currentUserTableHTML +=
         `<tr>
             <td>${currentUser.username}</td>
-            <td>${currentUser.usersurname}</td>
+            <td>${currentUser.surname}</td>
             <td>${currentUser.password}</td>
             <td>${currentUser.roles.map(role => role.name.substring(5).concat(" ")).toString().replaceAll(",", "")}</td>
         </tr>`
