@@ -1,22 +1,20 @@
 package ru.kata.spring.boot_security.demo.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.kata.spring.boot_security.demo.dao.RoleDao;
 import ru.kata.spring.boot_security.demo.model.Role;
 import ru.kata.spring.boot_security.demo.model.User;
 import ru.kata.spring.boot_security.demo.security.UserDetailsServiceImpl;
-import ru.kata.spring.boot_security.demo.security.UserPrincipal;
 import ru.kata.spring.boot_security.demo.service.UserService;
 
-import java.security.Principal;
 import java.util.List;
+import java.util.NoSuchElementException;
 
-@Controller
-@RequestMapping("/admin")
+@RestController
+@RequestMapping("api/users")
 public class AdminController {
 
     private final UserService userService;
@@ -37,51 +35,57 @@ public class AdminController {
         return roleDao.findAll();
     }
 
-
+/*
     @GetMapping("/user")
-    public String getUserById(Model model, Authentication authentication) {
-        String username = authentication.getName();
-        UserPrincipal user = (UserPrincipal) userDetailsService.loadUserByUsername(username);
-        model.addAttribute("user", user);
-        return "user";
-    }
+    public User getUserById(Principal principal, Authentication authentication) {
+//        String username = authentication.getName();
+//        UserPrincipal user = (UserPrincipal) userDetailsService.loadUserByUsername(username);
+//        return user;
 
+        String username = principal.getName();
+        UserPrincipal userPrincipal = (UserPrincipal) userDetailsService.loadUserByUsername(username);
+
+        return userService.getUser(userPrincipal.getId());}
+*/
 
     @GetMapping()
-    public String getUsers(Model model, Principal principal) {
-        model.addAttribute("users", userService.getAllUsers());
-        model.addAttribute("principal", userDetailsService.loadUserByUsername(principal.getName()));
-        return "users";
+    public ResponseEntity<List<User>> getUsers() {
+        return new ResponseEntity<>(userService.getAllUsers(), HttpStatus.OK);
     }
 
-    @GetMapping("/")
-    public String getUserByID(@RequestParam Long id, Model model) {
-        model.addAttribute("user", userService.getUser(id));
-        return "show";
+    @GetMapping("/{id}")
+    public ResponseEntity<User> getUserByID(@PathVariable Long id) {
+
+        return new ResponseEntity<>(userService.getUser(id), HttpStatus.OK);
     }
 
-    @GetMapping("/new")
-    public String showSignUpForm(@ModelAttribute("user") User user, Model model, Principal principal) {
-        model.addAttribute("principal", userDetailsService.loadUserByUsername(principal.getName()));
-        return "new";
-    }
+//    @GetMapping("/new")
+//    public String showSignUpForm(@ModelAttribute("user") User user, Model model, Principal principal) {
+//        model.addAttribute("principal", userDetailsService.loadUserByUsername(principal.getName()));
+//        return "new";
+//    }
 
     @PostMapping()
-    public String addUser(@ModelAttribute("user") User user) {
-        userService.addUser(user);
-        return "redirect:/admin";
+    public ResponseEntity<?> createUser(@RequestBody User user) {
+        userService.saveUser(user);
+        return ResponseEntity.ok(HttpStatus.OK);
     }
 
-    @PatchMapping("/")
-    public String updateUser(@ModelAttribute("user") User user) {
-        userService.updateUser(user);
-        return "redirect:/admin";
+    @PutMapping("/{id}")
+    public ResponseEntity<?> updateUser(@PathVariable Long id, @RequestBody User user) {
+        userService.saveUser(user);
+        return ResponseEntity.ok(HttpStatus.OK);
     }
 
-    @DeleteMapping("/")
-    public String deleteUser(@RequestParam Long id) {
+    @DeleteMapping("/{id}")
+    public ResponseEntity<HttpStatus> deleteUser(@PathVariable("id") Long id) {
+
+        User user = userService.getUser(id);
+        if (user == null) {
+            throw new NoSuchElementException("There is no such user");
+        }
         userService.deleteUser(id);
-        return "redirect:/admin";
+        return ResponseEntity.ok(HttpStatus.OK);
     }
 }
 

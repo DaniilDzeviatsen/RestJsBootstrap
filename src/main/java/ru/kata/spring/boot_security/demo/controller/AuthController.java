@@ -33,7 +33,7 @@ public class AuthController {
     public String doRegistration(@ModelAttribute("user") User user) {
         Role role = roleDao.findByName("ROLE_USER");
         user.addRole(role);
-        userService.addUser(user);
+        userService.saveUser(user);
         return "redirect:/login";
     }
 }
