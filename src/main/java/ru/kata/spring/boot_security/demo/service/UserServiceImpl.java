@@ -48,7 +48,6 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public void updateUser(Long id, User user) {
-//        userDao.save(user);
         User updateUser = userDao.findById(id).orElseThrow(() -> new NoSuchUserException(
                 "There is no employee with ID = '" + id + "' in Database"
         ));
