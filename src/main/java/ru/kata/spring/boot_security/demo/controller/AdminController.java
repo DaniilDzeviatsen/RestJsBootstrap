@@ -35,18 +35,6 @@ public class AdminController {
         return roleDao.findAll();
     }
 
-/*
-    @GetMapping("/user")
-    public User getUserById(Principal principal, Authentication authentication) {
-//        String username = authentication.getName();
-//        UserPrincipal user = (UserPrincipal) userDetailsService.loadUserByUsername(username);
-//        return user;
-
-        String username = principal.getName();
-        UserPrincipal userPrincipal = (UserPrincipal) userDetailsService.loadUserByUsername(username);
-
-        return userService.getUser(userPrincipal.getId());}
-*/
 
     @GetMapping()
     public ResponseEntity<List<User>> getUsers() {
@@ -58,12 +46,6 @@ public class AdminController {
 
         return new ResponseEntity<>(userService.getUser(id), HttpStatus.OK);
     }
-
-//    @GetMapping("/new")
-//    public String showSignUpForm(@ModelAttribute("user") User user, Model model, Principal principal) {
-//        model.addAttribute("principal", userDetailsService.loadUserByUsername(principal.getName()));
-//        return "new";
-//    }
 
     @PostMapping()
     public ResponseEntity<?> createUser(@RequestBody User user) {

@@ -29,23 +29,6 @@ public class UsersController {
         this.userService = userService;
         this.roleDao = roleDao;
     }
-//возвращается json юзер принципала
-//    @GetMapping("/user")
-//    public User getUserById(Principal principal) {
-//        String username = principal.getName();
-//        UserPrincipal userPrincipal = (UserPrincipal) userDetailsService.loadUserByUsername(username);
-//
-//        return userService.getUser(userPrincipal.getId());
-//возвращается json юзера
-//    }
-//    @GetMapping("/user")
-//    public ResponseEntity<User> getUserById(Principal principal) {
-//        String username = principal.getName();
-//        UserPrincipal userPrincipal = (UserPrincipal) userDetailsService.loadUserByUsername(username);
-//
-//        return new ResponseEntity<>(userService.getUser(userPrincipal.getId()), HttpStatus.OK);
-//
-//    }
 
     @GetMapping()
     public ResponseEntity<User> getCurrentUser(Principal principal) {
